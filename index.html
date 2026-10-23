@@ -360,7 +360,7 @@ const HISTORIA = [
     modulo: "Capítulo 0",
     titulo: "Antes de tudo",
     periodo: "O primeiro dia",
-    depoimento: "Éramos 13 estranhos com um notebook cada um. Mal nos falávamos. Não fazíamos ideia de que, módulo após módulo, isso ia virar o que é hoje.",
+    depoimento: "Antes éramos 29 alunos praticamente desconhecidos. Mal nos falávamos. Não fazíamos ideia de que, módulo após módulo, isso ia virar o que é hoje.",
     ps: "quem diria, hein?",
     caption: "o começo de tudo"
   },
@@ -460,8 +460,8 @@ HISTORIA.forEach((item, i) => {
   let photoHtml = '';
   if (item.tipo === 'inicio') {
     photoHtml = `<div class="polaroid special"><div class="photo">
-      <div class="dots">${'<span></span>'.repeat(13)}</div>
-      <div class="special-note">13 pessoas.<br>0 amizades.<br>(ainda)</div>
+      <div class="dots">${'<span></span>'.repeat(29)}</div>
+      <div class="special-note">29 pessoas.<br>0 amizades.<br>(ainda)</div>
     </div><div class="caption">${item.caption}</div></div>`;
   } else if (item.tipo === 'fim') {
     photoHtml = `<div class="polaroid empty"><div class="photo">
