@@ -259,8 +259,9 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
-  margin: -0.4rem 0 1.2rem;
+  margin: 0.5rem 0 1.2rem;
 }
+.card .period + .courses { margin-top: -0.4rem; }
 .card .courses span {
   font-size: 0.78rem;
   color: var(--accent-soft);
@@ -409,6 +410,18 @@ const HISTORIA = [
   },
   {
     tipo: "professor",
+    modulo: "Módulo 4,5",
+    titulo: "Prof. Pedro Murilo",
+    periodo: "",
+    componentes: ["Design de Páginas Web"],
+    depoimento: "[Depoimento da turma]",
+    ps: "[Rabisco à mão]",
+    /* foto: ainda não temos. Quando tiver, salve em img/turma-com-professor-pedro.jpg
+       e troque esta linha por:  foto: "img/turma-com-professor-pedro.jpg", */
+    caption: "[legenda manuscrita]"
+  },
+  {
+    tipo: "professor",
     modulo: "Módulo 5",
     titulo: "Prof. Rodrigo",
     periodo: "Junho de 2026",
@@ -454,6 +467,10 @@ HISTORIA.forEach((item, i) => {
     photoHtml = `<div class="polaroid empty"><div class="photo">
       <div class="empty-inner">foto da formatura<br>fica aqui \u{1F4F7}</div>
     </div><div class="caption">${item.caption}</div></div>`;
+  } else if (!item.foto) {
+    photoHtml = `<div class="polaroid empty"><div class="photo">
+      <div class="empty-inner">foto com ${item.titulo}<br>fica aqui \u{1F4F7}</div>
+    </div><div class="caption">${item.caption}</div></div>`;
   } else {
     photoHtml = `<div class="polaroid"><div class="photo"><img src="${item.foto}" alt="${item.titulo} com a turma" loading="lazy"></div><div class="caption">${item.caption}</div></div>`;
   }
@@ -467,7 +484,7 @@ HISTORIA.forEach((item, i) => {
     <div class="side"><div class="card">
       <div class="module-label">${item.modulo}</div>
       <h2>${item.titulo}</h2>
-      <div class="period">${item.periodo}</div>
+      ${item.periodo ? `<div class="period">${item.periodo}</div>` : ''}
       ${cursosHtml}
       <div class="quote">${item.depoimento}</div>
       <div class="author">— Turma Web e Mobile 02-2026</div>
