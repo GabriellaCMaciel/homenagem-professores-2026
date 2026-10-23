@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Álbum Web e Mobile 02-2026 — Homenagem aos Professores</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #1a1512;
+  --bg2: #241d17;
+  --paper: #fdf8ef;
+  --ink: #2b241c;
+  --accent: #e8a54b;
+  --accent-soft: #f5d9a8;
+  --line: rgba(245, 217, 168, 0.25);
+  --txt: #f0e7d8;
+  --txt-dim: #b8a98f;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(232,165,75,0.07), transparent 60%),
+    radial-gradient(ellipse at 50% 100%, rgba(232,165,75,0.05), transparent 60%),
+    var(--bg);
+  color: var(--txt);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+/* ============ HERO ============ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  position: relative;
+}
+.hero .tag {
+  font-size: 0.8rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+  animation: fadeDown 1s ease both;
+}
+.hero h1 {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(3rem, 9vw, 6.5rem);
+  font-weight: 700;
+  color: var(--txt);
+  line-height: 1.05;
+  animation: fadeUp 1s 0.2s ease both;
+}
+.hero h1 span { color: var(--accent); }
+.hero p {
+  max-width: 520px;
+  color: var(--txt-dim);
+  margin-top: 1.5rem;
+  font-size: 1.05rem;
+  animation: fadeUp 1s 0.4s ease both;
+}
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  color: var(--txt-dim);
+  font-size: 0.8rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  animation: fadeUp 1s 0.8s ease both, bob 2.2s 1.5s ease-in-out infinite;
+}
+.scroll-hint::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 42px;
+  background: linear-gradient(var(--accent), transparent);
+  margin: 0.8rem auto 0;
+}
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: none; } }
+
+/* ============ TIMELINE ============ */
+.timeline {
+  position: relative;
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 6rem;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(transparent, var(--line) 5%, var(--line) 95%, transparent);
+}
+.entry {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 7rem 0;
+  opacity: 0;
+  transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.entry.from-left { transform: translateX(-60px) rotate(-1deg); }
+.entry.from-right { transform: translateX(60px) rotate(1deg); }
+.entry.visible { opacity: 1; transform: translateX(0) rotate(0); }
+.entry::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 5px rgba(232,165,75,0.15), 0 0 18px rgba(232,165,75,0.6);
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+.side { width: 50%; padding: 0 3.2rem; }
+.from-left .side:first-child { order: 1; text-align: right; }
+.from-left .side:last-child { order: 2; }
+.from-right .side:first-child { order: 2; }
+.from-right .side:last-child { order: 1; text-align: left; }
+
+/* -------- Polaroid -------- */
+.polaroid {
+  display: inline-block;
+  background: var(--paper);
+  padding: 14px 14px 52px;
+  border-radius: 4px;
+  box-shadow: 0 18px 45px rgba(0,0,0,0.5), 0 3px 10px rgba(0,0,0,0.4);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
+  position: relative;
+  max-width: 430px;
+  width: 100%;
+  transform: rotate(-2deg);
+}
+.from-right .polaroid { transform: rotate(2deg); }
+.entry.visible .polaroid:hover {
+  transform: rotate(0deg) scale(1.03);
+  box-shadow: 0 26px 60px rgba(0,0,0,0.6), 0 4px 14px rgba(0,0,0,0.45);
+  z-index: 5;
+}
+.polaroid .photo {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #111;
+  overflow: hidden;
+  border-radius: 2px;
+}
+.polaroid .photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(0.92) contrast(1.03);
+}
+.polaroid .caption {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: 'Caveat', cursive;
+  font-size: 1.35rem;
+  color: var(--ink);
+}
+/* fita adesiva */
+.polaroid::before {
+  content: '';
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  width: 90px;
+  height: 26px;
+  transform: translateX(-50%) rotate(-3deg);
+  background: rgba(245, 217, 168, 0.75);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+  border-left: 1px dashed rgba(0,0,0,0.08);
+  border-right: 1px dashed rgba(0,0,0,0.08);
+}
+/* -------- polaroid especial (sem foto) -------- */
+.polaroid.special .photo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(232,165,75,0.12), transparent 70%),
+    #221b14;
+  color: var(--txt-dim);
+  padding: 1.5rem;
+}
+.dots { display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; max-width: 160px; }
+.dots span {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: rgba(245, 217, 168, 0.4);
+  animation: blink 2.6s ease-in-out infinite;
+}
+.dots span:nth-child(3n) { animation-delay: 0.4s; }
+.dots span:nth-child(4n) { animation-delay: 0.9s; }
+@keyframes blink { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+.special-note {
+  font-family: 'Caveat', cursive;
+  font-size: 1.25rem;
+  color: var(--accent-soft);
+  text-align: center;
+  line-height: 1.3;
+}
+/* -------- polaroid vazia (formatura) -------- */
+.polaroid.empty .photo {
+  border: 2px dashed rgba(43, 36, 28, 0.3);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.empty-inner {
+  text-align: center;
+  color: rgba(43,36,28,0.55);
+  font-family: 'Caveat', cursive;
+  font-size: 1.3rem;
+  padding: 1rem;
+  line-height: 1.35;
+}
+/* -------- Card de texto -------- */
+.module-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+.card h2 {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  color: var(--txt);
+  line-height: 1.1;
+}
+.card .period {
+  color: var(--txt-dim);
+  font-size: 0.9rem;
+  margin: 0.35rem 0 1.1rem;
+}
+.card .quote {
+  background: var(--bg2);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  padding: 1.1rem 1.3rem;
+  color: var(--txt);
+  font-size: 1.02rem;
+  font-style: italic;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+.card .quote::before { content: '\201C'; color: var(--accent); font-size: 1.4em; line-height: 0; margin-right: 2px; }
+.card .quote::after { content: '\201D'; color: var(--accent); font-size: 1.4em; line-height: 0; margin-left: 2px; }
+.card .author { margin-top: 0.7rem; font-size: 0.85rem; color: var(--txt-dim); }
+.ps {
+  display: inline-block;
+  font-family: 'Caveat', cursive;
+  font-size: 1.3rem;
+  color: var(--accent-soft);
+  margin-top: 1.1rem;
+  transform: rotate(-1.5deg);
+}
+
+/* ============ FINAL ============ */
+.final {
+  text-align: center;
+  padding: 6rem 1.5rem 8rem;
+  position: relative;
+}
+.final .from-team {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  color: var(--txt);
+  margin-bottom: 1rem;
+}
+.final p { color: var(--txt-dim); max-width: 560px; margin: 0.4rem auto; }
+.final .names {
+  margin-top: 3rem;
+  font-size: 0.9rem;
+  color: var(--txt-dim);
+  letter-spacing: 0.05em;
+}
+.final .names strong { color: var(--accent-soft); display: block; margin-bottom: 0.8rem; letter-spacing: 0.3em; font-size: 0.75rem; text-transform: uppercase; }
+.final .names span::after { content: ' \2022'; color: var(--accent); }
+.final .names span:last-child::after { content: ''; }
+
+@media (max-width: 820px) {
+  .timeline::before { left: 20px; }
+  .entry { flex-direction: column; margin: 5rem 0; align-items: flex-start; }
+  .entry::before { left: 20px; top: 0; transform: translate(-50%, -50%); }
+  .side { width: 100%; padding: 2.2rem 0 0 3rem; text-align: left !important; order: unset !important; }
+  .polaroid { max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="tag">Homenagem &bull; Dia dos Professores</div>
+  <h1>Web e Mobile <span>02-2026</span></h1>
+  <p>Cada módulo do curso nos trouxe um professor. Cada professor nos trouxe algo que não está em nenhum slide. Role para reviver.</p>
+  <div class="scroll-hint">Role para começar</div>
+</section>
+
+<div class="timeline" id="timeline"><!-- gerado via JS --></div>
+
+<section class="final">
+  <div class="from-team">De nós, pra vocês.</div>
+  <p>Obrigado por cada explicação repetida com paciência, por cada "vamos tentar de novo", por acreditarem em 13 pessoas que mal se conheciam — e fazerem delas uma turma.</p>
+  <p>O próximo deploy é nosso. Mas a base foi vocês quem construiu.</p>
+  <div class="names" id="names"><strong>Turma Web e Mobile 02-2026</strong></div>
+</section>
+
+<script>
+/* ================================================================
+   CONFIGURAÇÃO — edite aqui! Não precisa mexer em mais nada.
+   Para cada professor: preencha módulo, nome, período, depoimento,
+   "ps" (rabisco manuscrito) e a foto correspondente em img/.
+   A ordem do array = ordem da linha do tempo.
+   ================================================================ */
+const ALUNOS = [
+  "Aluno 1", "Aluno 2", "Aluno 3", "Aluno 4", "Aluno 5", "Aluno 6",
+  "Aluno 7", "Aluno 8", "Aluno 9", "Aluno 10", "Aluno 11", "Aluno 12", "Aluno 13"
+];
+
+const HISTORIA = [
+  {
+    tipo: "inicio",
+    modulo: "Capítulo 0",
+    titulo: "Antes de tudo",
+    periodo: "O primeiro dia",
+    depoimento: "Éramos 13 estranhos com um notebook cada um. Mal nos falávamos. Não fazíamos ideia de que, módulo após módulo, isso ia virar o que é hoje.",
+    ps: "quem diria, hein?",
+    caption: "o começo de tudo"
+  },
+  {
+    tipo: "professor",
+    modulo: "Módulo 1",
+    titulo: "Prof. [Nome 1]",
+    periodo: "[Mês/Ano] — [Mês/Ano]",
+    depoimento: "[Depoimento da turma para este professor. 2-3 frases: o que ele ensinou, como ensinou, um momento marcante.]",
+    ps: "[Rabisco à mão, ex.: \u201Cesse dia ele explicou fetch 4 vezes até a gente entender\u201D]",
+    foto: "img/foto1.jpg",
+    caption: "[legenda manuscrita da foto]"
+  },
+  {
+    tipo: "professor",
+    modulo: "Módulo 2",
+    titulo: "Prof. [Nome 2]",
+    periodo: "[Mês/Ano] — [Mês/Ano]",
+    depoimento: "[Depoimento da turma]",
+    ps: "[Rabisco à mão]",
+    foto: "img/foto2.jpg",
+    caption: "[legenda manuscrita]"
+  },
+  {
+    tipo: "professor",
+    modulo: "Módulo 3",
+    titulo: "Prof. [Nome 3]",
+    periodo: "[Mês/Ano] — [Mês/Ano]",
+    depoimento: "[Depoimento da turma]",
+    ps: "[Rabisco à mão]",
+    foto: "img/foto3.jpg",
+    caption: "[legenda manuscrita]"
+  },
+  {
+    tipo: "professor",
+    modulo: "Módulo 4",
+    titulo: "Prof. [Nome 4]",
+    periodo: "[Mês/Ano] — [Mês/Ano]",
+    depoimento: "[Depoimento da turma]",
+    ps: "[Rabisco à mão]",
+    foto: "img/foto4.jpg",
+    caption: "[legenda manuscrita]"
+  },
+  {
+    tipo: "professor",
+    modulo: "Módulo 5",
+    titulo: "Prof. [Nome 5]",
+    periodo: "[Mês/Ano] — [Mês/Ano]",
+    depoimento: "[Depoimento da turma]",
+    ps: "[Rabisco à mão]",
+    foto: "img/foto5.jpg",
+    caption: "[legenda manuscrita]"
+  },
+  {
+    tipo: "fim",
+    modulo: "Próximo capítulo",
+    titulo: "A formatura",
+    periodo: "Por vir...",
+    depoimento: "Espaço reservado pra foto da formatura. Obrigado a cada professor por estarem construindo esse dia com a gente.",
+    ps: "a gente se vê lá em cima \u{1F393}",
+    caption: "em breve..."
+  }
+];
+
+/* ==================== RENDERIZAÇÃO ==================== */
+const tl = document.getElementById('timeline');
+
+HISTORIA.forEach((item, i) => {
+  const side = i % 2 === 0 ? 'from-left' : 'from-right';
+  const entry = document.createElement('div');
+  entry.className = `entry ${side}`;
+
+  let photoHtml = '';
+  if (item.tipo === 'inicio') {
+    photoHtml = `<div class="polaroid special"><div class="photo">
+      <div class="dots">${'<span></span>'.repeat(13)}</div>
+      <div class="special-note">13 pessoas.<br>0 amizades.<br>(ainda)</div>
+    </div><div class="caption">${item.caption}</div></div>`;
+  } else if (item.tipo === 'fim') {
+    photoHtml = `<div class="polaroid empty"><div class="photo">
+      <div class="empty-inner">foto da formatura<br>fica aqui \u{1F4F7}</div>
+    </div><div class="caption">${item.caption}</div></div>`;
+  } else {
+    photoHtml = `<div class="polaroid"><div class="photo"><img src="${item.foto}" alt="${item.titulo} com a turma" loading="lazy"></div><div class="caption">${item.caption}</div></div>`;
+  }
+
+  entry.innerHTML = `
+    <div class="side">${photoHtml}</div>
+    <div class="side"><div class="card">
+      <div class="module-label">${item.modulo}</div>
+      <h2>${item.titulo}</h2>
+      <div class="period">${item.periodo}</div>
+      <div class="quote">${item.depoimento}</div>
+      <div class="author">— Turma Web e Mobile 02-2026</div>
+      <div class="ps">${item.ps}</div>
+    </div></div>`;
+  tl.appendChild(entry);
+});
+
+/* nomes da turma no final */
+document.getElementById('names').innerHTML +=
+  ALUNOS.map(n => `<span>${n}</span>`).join(' ');
+
+/* animação de entrada no scroll */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.25 });
+document.querySelectorAll('.entry').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
