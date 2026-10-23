@@ -255,6 +255,20 @@ body {
   font-size: 0.9rem;
   margin: 0.35rem 0 1.1rem;
 }
+.card .courses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: -0.4rem 0 1.2rem;
+}
+.card .courses span {
+  font-size: 0.78rem;
+  color: var(--accent-soft);
+  background: rgba(232, 165, 75, 0.08);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.2rem 0.75rem;
+}
 .card .quote {
   background: var(--bg2);
   border-left: 3px solid var(--accent);
@@ -432,12 +446,17 @@ HISTORIA.forEach((item, i) => {
     photoHtml = `<div class="polaroid"><div class="photo"><img src="${item.foto}" alt="${item.titulo} com a turma" loading="lazy"></div><div class="caption">${item.caption}</div></div>`;
   }
 
+  const cursosHtml = item.componentes
+    ? `<div class="courses">${item.componentes.map(c => `<span>${c}</span>`).join('')}</div>`
+    : '';
+
   entry.innerHTML = `
     <div class="side">${photoHtml}</div>
     <div class="side"><div class="card">
       <div class="module-label">${item.modulo}</div>
       <h2>${item.titulo}</h2>
       <div class="period">${item.periodo}</div>
+      ${cursosHtml}
       <div class="quote">${item.depoimento}</div>
       <div class="author">— Turma Web e Mobile 02-2026</div>
       <div class="ps">${item.ps}</div>
