@@ -304,16 +304,35 @@ body {
   color: var(--txt);
   margin-bottom: 1rem;
 }
-.final p { color: var(--txt-dim); max-width: 560px; margin: 0.4rem auto; }
+.final p {
+  color: var(--txt-dim);
+  max-width: min(100%, 1180px);
+  margin: 0.6rem auto;
+  font-size: clamp(1.05rem, 0.6vw + 0.85rem, 1.45rem);
+  text-wrap: balance;
+}
 .final .names {
-  margin-top: 3rem;
+  max-width: min(100%, 1360px);
+  margin: 3rem auto 0;
   font-size: 0.9rem;
   color: var(--txt-dim);
   letter-spacing: 0.05em;
+  text-wrap: balance;
 }
+.final .names span {
+  display: inline-block;
+  white-space: nowrap;
+  margin: 0 clamp(0.8rem, 1.2vw, 1.6rem);
+  font-family: 'Caveat', cursive;
+  font-size: clamp(1.5rem, 0.9vw + 1.1rem, 2.1rem);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.9;
+  color: var(--txt);
+}
+.final .names.honra { margin-top: 2.4rem; }
+.final .names.honra span { font-size: clamp(1.3rem, 0.7vw + 1rem, 1.7rem); color: var(--txt-dim); }
 .final .names strong { color: var(--accent-soft); display: block; margin-bottom: 0.8rem; letter-spacing: 0.3em; font-size: 0.75rem; text-transform: uppercase; }
-.final .names span::after { content: ' \2022'; color: var(--accent); }
-.final .names span:last-child::after { content: ''; }
 
 /* ============ DESKTOP / TELAS GRANDES ============ */
 @media (min-width: 1200px) {
@@ -328,6 +347,8 @@ body {
   .entry::before { left: 20px; top: 0; transform: translate(-50%, -50%); }
   .side { width: 100%; padding: 2.2rem 0 0 3rem; text-align: left !important; order: unset !important; }
   .polaroid { max-width: 100%; }
+  .final .names span { margin: 0 0.8rem; font-size: 1.5rem; }
+  .final .names.honra span { font-size: 1.3rem; }
 }
 </style>
 </head>
