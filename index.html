@@ -283,6 +283,7 @@ body {
 .card .quote::before { content: '\201C'; color: var(--accent); font-size: 1.4em; line-height: 0; margin-right: 2px; }
 .card .quote::after { content: '\201D'; color: var(--accent); font-size: 1.4em; line-height: 0; margin-left: 2px; }
 .card .author { margin-top: 0.7rem; font-size: 0.85rem; color: var(--txt-dim); }
+.card .author + .quote { margin-top: 1.5rem; }
 .ps {
   display: inline-block;
   font-family: 'Caveat', cursive;
@@ -513,6 +514,10 @@ HISTORIA.forEach((item, i) => {
     ? `<div class="courses">${item.componentes.map(c => `<span>${c}</span>`).join('')}</div>`
     : '';
 
+  const depoimentosHtml = item.depoimentos
+    ? item.depoimentos.map(d => `<div class="quote">${d.texto}</div><div class="author">— ${d.autor}</div>`).join('')
+    : `<div class="quote">${item.depoimento}</div><div class="author">— Turma Web e Mobile II - 2026</div>`;
+
   entry.innerHTML = `
     <div class="side">${photoHtml}</div>
     <div class="side"><div class="card">
@@ -520,8 +525,7 @@ HISTORIA.forEach((item, i) => {
       <h2>${item.titulo}</h2>
       ${item.periodo ? `<div class="period">${item.periodo}</div>` : ''}
       ${cursosHtml}
-      <div class="quote">${item.depoimento}</div>
-      <div class="author">— Turma Web e Mobile II - 2026</div>
+      ${depoimentosHtml}
       <div class="ps">${item.ps}</div>
     </div></div>`;
   tl.appendChild(entry);
