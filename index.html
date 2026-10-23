@@ -340,6 +340,7 @@ body {
   <p>Obrigado por cada explicação repetida com paciência, por cada "vamos tentar de novo", por acreditarem em 13 pessoas que mal se conheciam — e fazerem delas uma turma.</p>
   <p>O próximo deploy é nosso. Mas a base foi vocês quem construiu.</p>
   <div class="names" id="names"><strong>Turma Web e Mobile II - 2026</strong></div>
+  <div class="names honra" id="honra"><strong>Menção honrosa</strong></div>
 </section>
 
 <script>
@@ -349,10 +350,15 @@ body {
    "ps" (rabisco manuscrito) e a foto correspondente em img/.
    A ordem do array = ordem da linha do tempo.
    ================================================================ */
+/* Turma atual, em ordem alfabética (pelo primeiro nome) */
 const ALUNOS = [
-  "Aluno 1", "Aluno 2", "Aluno 3", "Aluno 4", "Aluno 5", "Aluno 6",
-  "Aluno 7", "Aluno 8", "Aluno 9", "Aluno 10", "Aluno 11", "Aluno 12", "Aluno 13"
+  "Álef Caleb", "Alexandro Ferreira", "Alonso dos Santos", "Gabriel Carneiro",
+  "Gabriella Cunha", "Gilvanir Sousa", "Guilherme Feitosa", "Juliana Barbosa",
+  "Júlio César", "Lara Lorrany", "Luiz Augusto", "Miguel Guilherme", "Pedro Henrique"
 ];
+
+/* Menção honrosa: quem fez parte da turma por um tempo (também em ordem alfabética) */
+const MENCAO_HONROSA = ["Fran", "Gabriel André"];
 
 const HISTORIA = [
   {
@@ -496,6 +502,8 @@ HISTORIA.forEach((item, i) => {
 /* nomes da turma no final */
 document.getElementById('names').innerHTML +=
   ALUNOS.map(n => `<span>${n}</span>`).join(' ');
+document.getElementById('honra').innerHTML +=
+  MENCAO_HONROSA.map(n => `<span>${n}</span>`).join(' ');
 
 /* animação de entrada no scroll */
 const observer = new IntersectionObserver((entries) => {
