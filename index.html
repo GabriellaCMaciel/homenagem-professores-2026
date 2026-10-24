@@ -160,15 +160,14 @@ body {
 }
 .polaroid .photo {
   width: 100%;
-  aspect-ratio: 4 / 3;
   background: #111;
   overflow: hidden;
   border-radius: 2px;
 }
+/* a foto define a altura do quadro: aparece inteira, sem cortes */
 .polaroid .photo img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
   display: block;
   filter: saturate(0.92) contrast(1.03);
 }
@@ -198,6 +197,7 @@ body {
 }
 /* -------- polaroid especial (sem foto) -------- */
 .polaroid.special .photo {
+  aspect-ratio: 4 / 3;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -227,6 +227,7 @@ body {
 }
 /* -------- polaroid vazia (formatura) -------- */
 .polaroid.empty .photo {
+  aspect-ratio: 4 / 3;
   border: 2px dashed rgba(43, 36, 28, 0.3);
   background: transparent;
   display: flex;
@@ -446,6 +447,7 @@ const HISTORIA = [
     ],
     ps: "[Rabisco à mão, ex.: \u201Cesse dia ele explicou fetch 4 vezes até a gente entender\u201D]",
     foto: "img/turma-com-professor-janio.jpg",
+    fotoTam: [1600, 900],
     caption: "19/08/2026"
   },
   {
@@ -466,6 +468,7 @@ const HISTORIA = [
     ],
     ps: "[Rabisco à mão]",
     foto: "img/turma-com-professora-marcia.jpg",
+    fotoTam: [1600, 1200],
     caption: "05/05/2026"
   },
   {
@@ -486,6 +489,7 @@ const HISTORIA = [
     ],
     ps: "[Rabisco à mão]",
     foto: "img/turma-com-professora-natany.jpg",
+    fotoTam: [1600, 1200],
     caption: "09/05/2026"
   },
   {
@@ -506,6 +510,7 @@ const HISTORIA = [
     ],
     ps: "[Rabisco à mão]",
     foto: "img/turma-com-professor-israel.jpg",
+    fotoTam: [1280, 960],
     caption: "29/05/2026"
   },
   {
@@ -526,6 +531,7 @@ const HISTORIA = [
     ],
     ps: "[Rabisco à mão]",
     foto: "img/turma-com-professor-pedro.jpg",
+    fotoTam: [1325, 957],
     caption: "23/10/2026"
   },
   {
@@ -553,6 +559,7 @@ const HISTORIA = [
     ],
     ps: "[Rabisco à mão]",
     foto: "img/turma-com-professor-rodrigo.jpg",
+    fotoTam: [1600, 900],
     caption: "15/10/2026"
   },
   {
@@ -589,7 +596,9 @@ HISTORIA.forEach((item, i) => {
       <div class="empty-inner">foto com ${item.titulo}<br>fica aqui \u{1F4F7}</div>
     </div><div class="caption">${item.caption}</div></div>`;
   } else {
-    photoHtml = `<div class="polaroid"><div class="photo"><img src="${item.foto}" alt="${item.titulo} com a turma" loading="lazy"></div><div class="caption">${item.caption}</div></div>`;
+    // largura/altura reais da foto: o navegador já reserva o espaço certo antes de ela carregar
+    const tam = item.fotoTam ? ` width="${item.fotoTam[0]}" height="${item.fotoTam[1]}"` : '';
+    photoHtml = `<div class="polaroid"><div class="photo"><img src="${item.foto}"${tam} alt="${item.titulo} com a turma" loading="lazy"></div><div class="caption">${item.caption}</div></div>`;
   }
 
   const cursosHtml = item.componentes
