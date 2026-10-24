@@ -366,37 +366,37 @@ body {
 /* ============ FINAL ============ */
 .final {
   text-align: center;
-  padding: 6rem 1.5rem 8rem;
+  padding: 6rem clamp(1.5rem, 3vw, 5rem) 8rem;   /* nas telas grandes o texto usa quase toda a largura */
   position: relative;
 }
 .final .from-team {
   font-family: 'Caveat', cursive;
-  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-size: clamp(2.2rem, 4vw, 5.5rem);
   color: var(--txt);
   margin-bottom: 1rem;
 }
 .final p {
   color: var(--txt-dim);
-  max-width: min(100%, 1180px);
-  margin: 0.6rem auto;
-  font-size: clamp(1.05rem, 0.6vw + 0.85rem, 1.45rem);
+  max-width: 100%;
+  margin: 0.8rem auto;
+  font-size: clamp(1.05rem, 1.35vw + 0.55rem, 2.8rem);
   text-wrap: balance;
 }
 .final .feliz {
   font-family: 'Caveat', cursive;
   font-weight: 700;
-  font-size: clamp(3rem, 7.5vw, 6.8rem);
+  font-size: clamp(3rem, 7.5vw, 12rem);
   line-height: 1.05;
   letter-spacing: 0.02em;
   color: var(--accent);
   text-shadow: 0 0 44px rgba(232, 165, 75, 0.35);
   text-wrap: balance;
-  max-width: min(100%, 1500px);
+  max-width: 100%;
   margin: 3.2rem auto 0;
 }
 .final .names {
-  --m: clamp(0.8rem, 1.2vw, 1.6rem); /* metade do vão entre dois nomes */
-  max-width: min(100%, 1360px);
+  --m: clamp(0.8rem, 2.6vw, 4.5rem); /* metade do vão entre dois nomes */
+  max-width: 100%;
   margin: 3rem auto 0;
   font-size: 0.9rem;
   color: var(--txt-dim);
@@ -409,7 +409,7 @@ body {
   white-space: nowrap;
   margin: 0 var(--m);
   font-family: 'Caveat', cursive;
-  font-size: clamp(1.5rem, 0.9vw + 1.1rem, 2.1rem);
+  font-size: clamp(1.5rem, 1.4vw + 1.1rem, 3.4rem);
   font-weight: 500;
   letter-spacing: 0.01em;
   line-height: 1.9;
@@ -430,8 +430,8 @@ body {
 }
 .final .names span.fim-linha::after { display: none; }
 .final .names.honra { margin-top: 2.4rem; }
-.final .names.honra span { font-size: clamp(1.3rem, 0.7vw + 1rem, 1.7rem); color: var(--txt-dim); }
-.final .names strong { color: var(--accent-soft); display: block; margin-bottom: 0.8rem; letter-spacing: 0.3em; font-size: 0.75rem; text-transform: uppercase; }
+.final .names.honra span { font-size: clamp(1.3rem, 1.1vw + 1rem, 2.8rem); color: var(--txt-dim); }
+.final .names strong { color: var(--accent-soft); display: block; margin-bottom: 0.8rem; letter-spacing: 0.3em; font-size: clamp(0.75rem, 0.5vw + 0.4rem, 1.2rem); text-transform: uppercase; }
 
 /* botão de voltar ao topo */
 .final .topo {
@@ -441,7 +441,7 @@ body {
   margin-top: 4.5rem;
   padding: 0.9rem 1.8rem;
   font: inherit;
-  font-size: clamp(0.95rem, 0.4vw + 0.8rem, 1.2rem);
+  font-size: clamp(0.95rem, 0.5vw + 0.8rem, 1.5rem);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--accent-soft);
