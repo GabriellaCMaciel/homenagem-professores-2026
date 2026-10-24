@@ -339,26 +339,18 @@ body {
   font-size: clamp(1.05rem, 0.6vw + 0.85rem, 1.45rem);
   text-wrap: balance;
 }
-.final .closing {
-  max-width: min(100%, 900px);
-  margin: 2.2rem auto 2.6rem;
-  padding: 1.4rem 1.8rem;
-  text-align: left;
-  background: var(--bg2);
-  border-left: 3px solid var(--accent);
-  border-radius: 0 10px 10px 0;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+.final .feliz {
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  font-size: clamp(3rem, 7.5vw, 6.8rem);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  text-shadow: 0 0 44px rgba(232, 165, 75, 0.35);
+  text-wrap: balance;
+  max-width: min(100%, 1500px);
+  margin: 3.2rem auto 0;
 }
-.final .closing .text {
-  color: var(--txt);
-  font-style: italic;
-  font-size: clamp(1.05rem, 0.5vw + 0.9rem, 1.4rem);
-  line-height: 1.6;
-  text-wrap: pretty;
-}
-.final .closing .text::before { content: '\201C'; color: var(--accent); font-size: 1.4em; line-height: 0; margin-right: 2px; }
-.final .closing .text::after { content: '\201D'; color: var(--accent); font-size: 1.4em; line-height: 0; margin-left: 2px; }
-.final .closing .author { margin-top: 0.8rem; font-size: 0.9rem; color: var(--txt-dim); }
 .final .names {
   max-width: min(100%, 1360px);
   margin: 3rem auto 0;
@@ -413,12 +405,9 @@ body {
 
 <section class="final">
   <div class="from-team">De nós, pra vocês.</div>
-  <div class="closing">
-    <div class="text">Que cada um de vocês saiba que seu trabalho deixa marcas que vão além da sala de aula. Obrigado por fazerem parte da minha história na Escola do Futuro de Goiás Paulo Renato de Souza!</div>
-    <div class="author">— Guilherme Feitosa</div>
-  </div>
   <p>Obrigado por cada explicação repetida com paciência, por cada "vamos tentar de novo", por acreditarem em 29 pessoas que mal se conheciam — e fazerem delas uma turma.</p>
   <p>O próximo deploy é nosso. Mas a base foram vocês que construíram.</p>
+  <div class="feliz">FELIZ DIA DOS PROFESSORES!</div>
   <div class="names" id="names"><strong>Turma Web e Mobile II - 2026</strong></div>
   <div class="names honra" id="honra"><strong>Menção honrosa</strong></div>
 </section>
