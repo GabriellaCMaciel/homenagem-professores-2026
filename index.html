@@ -305,6 +305,7 @@ body {
   color: var(--txt);
   font-size: 1.02rem;
   font-style: italic;
+  white-space: pre-line; /* "\n\n" no texto vira parágrafo novo dentro do mesmo depoimento */
   box-shadow: 0 8px 24px rgba(0,0,0,0.3);
 }
 .card .quote::before { content: '\201C'; color: var(--accent); font-size: 1.4em; line-height: 0; margin-right: 2px; }
@@ -464,6 +465,10 @@ const HISTORIA = [
       {
         autor: "Guilherme Feitosa",
         texto: "Minha gratidão ao professor Jânio por todas as aulas de Matemática, pela dedicação e por contribuir para minha formação. Obrigado por compartilhar seus conhecimentos comigo e com nossa turma."
+      },
+      {
+        autor: "Gabriel Carneiro",
+        texto: "Jânio me ajudou em duas coisas diferentes, porque aparentemente uma só não era suficiente para resolver minha situação. Ainda bem que ele teve paciência!\n\nTem professor que ensina a matéria, e tem o Jânio, que ensina até aquilo que a gente nem sabia que precisava aprender. Basicamente, um pacote completo de conhecimentos 😄\n\nSou muito grato ao Jânio por toda a ajuda. Porque, se dependesse apenas do que eu consegui aprender sozinho, talvez eu ainda estivesse tentando descobrir por onde começar. KKKK."
       }
     ],
     ps: "[Rabisco à mão, ex.: \u201Cesse dia ele explicou fetch 4 vezes até a gente entender\u201D]",
@@ -485,6 +490,10 @@ const HISTORIA = [
       {
         autor: "Guilherme Feitosa",
         texto: "Minha sincera homenagem à professora Márcia, por sua dedicação, paciência e compromisso com a educação. Obrigado por cada ensinamento e por contribuir não apenas para minha formação acadêmica, mas também para meu crescimento pessoal e profissional."
+      },
+      {
+        autor: "Gabriel Carneiro",
+        texto: "Com a professora Márcia, aprendi que o importante não é saber fazer o trabalho, mas aceitar a vaga primeiro e descobrir como faz depois. Afinal, oportunidade não espera currículo atualizado. KKKK.\n\nMárcia sempre me deu os melhores conselhos profissionais: se aparecer uma vaga, aceite! Se for perigosa, vá com fé. Se não souber fazer, melhor ainda, porque aí o aprendizado é garantido. 😂\n\nA frase mais perigosa da professora Márcia não é uma ameaça, é um conselho de carreira: ‘Sabe??? Eu sei kkk’. E o pior é que ela fala com tanta confiança que Se um dia eu conseguir um emprego, já sei a quem agradecer. Se der errado, também sei quem vou procurar para pedir outro conselho. Porque, segundo Márcia, experiência profissional começa quando a gente aceita o que nem sabe fazer. KKKK.” quase convence a gente também! 🤣\n\nMas ainda assim eu sou muito grato pelos ensinamentos de vida dela e toda sua experiência em muitas áreas, aprendi muito não só do curso mas também da vida profissional, obrigado muito muito mesmo por compartilhar essa sabedoria conosco 😊"
       }
     ],
     ps: "[Rabisco à mão]",
@@ -506,6 +515,10 @@ const HISTORIA = [
       {
         autor: "Guilherme Feitosa",
         texto: "À professora Natany, minha gratidão por todo o conhecimento compartilhado e pela dedicação ao ensino. Seus ensinamentos fizeram parte da minha trajetória e levarei comigo as lições aprendidas ao longo dessa jornada."
+      },
+      {
+        autor: "Gabriel Carneiro",
+        texto: "Com a Natany, aprendi a desenvolver sites e descobri que fazer uma página funcionar é fácil… difícil é fazer tudo funcionar sem aparecer um erro misterioso do nada. 😁\n\nNatany ensina com tanto carisma que a gente até esquece que está tentando entender um monte de códigos. Aí chega a hora de fazer sozinho e o desespero volta. KKKK.\n\nNatany, obrigado pelos ensinamentos e pelo carisma! A senhora conseguiu ensinar programação sem deixar o ambiente pesado. Só não prometo que meus códigos vão ter o mesmo carisma que a professora. 🤣"
       }
     ],
     ps: "[Rabisco à mão]",
@@ -527,6 +540,10 @@ const HISTORIA = [
       {
         autor: "Guilherme Feitosa",
         texto: "Minha homenagem ao professor Israel, por sua contribuição para minha formação e por compartilhar seus conhecimentos de hardware conosco em aulas muito didáticas e divertidas. Obrigado pela dedicação e por fazer parte da minha caminhada na área da tecnologia!"
+      },
+      {
+        autor: "Gabriel Carneiro",
+        texto: "Com o Israel, descobri que existe uma diferença entre assistir à aula, entender a matéria e fingir que entendeu para não precisar perguntar de novo ou ele vir me perguntar algo a respeito 😅. Eu passei pelas quatro fases. KKKK.\n\nConfesso que algumas partes da matéria do Israel pareciam ter sido escritas em outro idioma. Mas, no meio da confusão, alguma coisa eu aprendi. E isso já é uma vitória! 😂\n\nApesar das dificuldades com a matéria, sou grato pelo que aprendi com o Israel. Talvez eu não tenha aprendido tudo, mas aprendi o suficiente para saber que ainda tenho muito a melhorar. KKKK."
       }
     ],
     ps: "[Rabisco à mão]",
@@ -548,6 +565,10 @@ const HISTORIA = [
       {
         autor: "Guilherme Feitosa",
         texto: "Ao professor Pedro, meu agradecimento por todos os ensinamentos, pela disposição em ensinar e pela contribuição para meu desenvolvimento. Obrigado por ajudar a construir os conhecimentos necessários de FIGMA que levarei comigo para os próximos desafios!"
+      },
+      {
+        autor: "Gabriel Carneiro",
+        texto: "Com o Pedro, tive pouco tempo para aprender, mas foi o suficiente para perceber que nosso site precisava de ajuda. E não era pouca, porque a parte visual estava bem preocupante afinal 🥲\n\nPedro, mesmo com pouco tempo, o senhor ajudou bastante a gente a melhorar na parte visual dos sites. Ainda temos muito a aprender, mas pelo menos agora sabemos que colocar tudo na tela não significa necessariamente que ficou bonito KKKK."
       }
     ],
     ps: "[Rabisco à mão]",
@@ -576,6 +597,10 @@ const HISTORIA = [
       {
         autor: "Guilherme Feitosa",
         texto: "Minha gratidão ao professor Rodrigo por sua dedicação e por todos os conhecimentos transmitidos durante nossa jornada no curso. Obrigado por contribuir para minha formação como desenvolvedor e por fazer parte dessa etapa tão significativa do meu começo na tecnologia."
+      },
+      {
+        autor: "Gabriel Carneiro",
+        texto: "Entrei nas aulas do Rodrigo sabendo algumas coisas e saí sabendo muito mais. Agora, se eu vou lembrar de tudo na hora que precisar, já é outra história. 🤡\n\nRodrigo, obrigado por tudo que ensinou e continua ensinando. O senhor fez sua parte; agora só falta meu cérebro colaborar para lembrar o que o senhor já ensinou pra gente."
       }
     ],
     ps: "[Rabisco à mão]",
