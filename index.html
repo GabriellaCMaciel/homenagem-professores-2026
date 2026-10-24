@@ -157,9 +157,10 @@ body {
   position: relative;
   max-width: 430px;
   width: 100%;
-  transform: rotate(-2deg);
+  --rot: -2deg; /* inclinação de repouso (o JS da foto ampliada também lê esta variável) */
+  transform: rotate(var(--rot));
 }
-.from-right .polaroid { transform: rotate(2deg); }
+.from-right .polaroid { --rot: 2deg; }
 .entry.visible .polaroid:hover {
   transform: rotate(0deg) scale(1.03);
   box-shadow: 0 26px 60px rgba(0,0,0,0.6), 0 4px 14px rgba(0,0,0,0.45);
@@ -213,6 +214,48 @@ body {
   border-left: 1px dashed rgba(255,255,255,0.08);
   border-right: 1px dashed rgba(255,255,255,0.08);
 }
+/* -------- foto ampliada (clique na polaroid) -------- */
+.polaroid[data-ampliavel] { cursor: zoom-in; }
+.polaroid[data-ampliavel]:focus-visible { outline: 3px solid var(--accent); outline-offset: 8px; }
+/* enquanto a cópia ampliada está na tela, a polaroid original fica parada e invisível no lugar dela */
+.polaroid.origem-ampliada {
+  visibility: hidden;
+  transition: none !important;
+  transform: rotate(var(--rot)) !important;
+}
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(8, 6, 5, 0.95);
+  overscroll-behavior: contain;
+  touch-action: none;
+  cursor: zoom-out;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.lightbox .polaroid { position: fixed; margin: 0; max-width: none; transition: none; cursor: zoom-out; }
+.lightbox .polaroid img { -webkit-user-drag: none; }
+.lightbox .fechar {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  padding-bottom: 4px;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--txt);
+  background: rgba(26, 21, 18, 0.78);
+  border: 1.5px solid rgba(240, 231, 216, 0.4);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.lightbox .fechar:hover { color: var(--accent-soft); border-color: var(--accent); }
+.lightbox .fechar:focus-visible { outline: 2px solid var(--accent-soft); outline-offset: 3px; }
 /* -------- polaroid especial (sem foto) -------- */
 .polaroid.special .photo {
   aspect-ratio: 4 / 3;
@@ -726,7 +769,7 @@ HISTORIA.forEach((item, i) => {
   } else {
     // largura/altura reais da foto: o navegador já reserva o espaço certo antes de ela carregar
     const tam = item.fotoTam ? ` width="${item.fotoTam[0]}" height="${item.fotoTam[1]}"` : '';
-    photoHtml = `<div class="polaroid"><div class="photo"><img src="${item.foto}"${tam} alt="${item.titulo} com a turma" loading="lazy"></div>${legendaHtml(item)}</div>`;
+    photoHtml = `<div class="polaroid" data-ampliavel role="button" tabindex="0" aria-label="Ampliar a foto: ${item.titulo}"><div class="photo"><img src="${item.foto}"${tam} alt="${item.titulo} com a turma" loading="lazy"></div>${legendaHtml(item)}</div>`;
   }
 
   const cursosHtml = item.componentes
@@ -786,6 +829,114 @@ const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.25 });
 document.querySelectorAll('.entry').forEach(el => observer.observe(el));
+
+/* ==================== FOTO AMPLIADA ====================
+   Clicar numa polaroid com foto cria uma cópia dela numa camada por cima da página e a faz crescer,
+   a partir do lugar onde ela está, até caber inteira na tela. Fecha com clique, Esc ou no X. */
+const ampliacao = (() => {
+  const SECOES = '.hero, .timeline, .final';
+  const reduzido = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const centro = el => { const r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
+  let atual = null;
+
+  // transform que deixa a polaroid o maior possível, centrada na tela
+  function transformAberto(a) {
+    const vw = document.documentElement.clientWidth, vh = document.documentElement.clientHeight;
+    const margem = Math.max(14, Math.min(vw, vh) * 0.02);
+    const k = Math.min((vw - 2 * margem) / a.w0, (vh - 2 * margem) / a.h0);
+    return `translate(${vw / 2 - (a.left + a.w0 / 2)}px, ${vh / 2 - (a.top + a.h0 / 2)}px) rotate(0deg) scale(${k})`;
+  }
+
+  function abrir(origem) {
+    if (atual) return;
+    const m = new DOMMatrix(getComputedStyle(origem).transform);   // inclinação/tamanho de agora (pode estar em :hover)
+    const [cx, cy] = centro(origem);
+    const w0 = origem.offsetWidth, h0 = origem.offsetHeight;
+    const clone = origem.cloneNode(true);
+    ['role', 'tabindex', 'data-ampliavel', 'aria-label'].forEach(n => clone.removeAttribute(n));
+    clone.querySelector('img').loading = 'eager';
+    const inicio = `translate(0px, 0px) rotate(${Math.atan2(m.b, m.a) * 180 / Math.PI}deg) scale(${Math.hypot(m.a, m.b)})`;
+    Object.assign(clone.style, { width: w0 + 'px', left: cx - w0 / 2 + 'px', top: cy - h0 / 2 + 'px', transform: inicio });
+
+    const overlay = document.createElement('div');
+    overlay.className = 'lightbox';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-label', 'Foto ampliada');
+    const botao = document.createElement('button');
+    botao.type = 'button';
+    botao.className = 'fechar';
+    botao.setAttribute('aria-label', 'Fechar foto');
+    botao.innerHTML = '&times;';
+    overlay.append(clone, botao);
+    overlay.addEventListener('click', fechar);
+    overlay.addEventListener('wheel', e => e.preventDefault(), { passive: false });   // a página de trás não rola
+    document.body.appendChild(overlay);
+
+    const a = atual = { origem, clone, overlay, botao, w0, h0, left: cx - w0 / 2, top: cy - h0 / 2, estado: 'abrindo' };
+    origem.classList.add('origem-ampliada');
+    document.querySelectorAll(SECOES).forEach(el => { el.inert = true; });   // foco e leitor de tela ficam só na foto
+
+    const dur = reduzido() ? 0 : 560;
+    a.anim = clone.animate([{ transform: inicio }, { transform: transformAberto(a) }],
+      { duration: dur, easing: 'cubic-bezier(0.2, 0.85, 0.25, 1)', fill: 'forwards' });
+    overlay.animate([{ backgroundColor: 'rgba(8, 6, 5, 0)' }, { backgroundColor: 'rgba(8, 6, 5, 0.95)' }], { duration: dur });
+    botao.animate([{ opacity: 0 }, { opacity: 1 }], { duration: dur });
+    a.anim.finished.then(() => {
+      if (atual !== a || a.estado !== 'abrindo') return;
+      clone.style.transform = transformAberto(a);
+      a.anim.cancel();
+      a.estado = 'aberta';
+    }, () => {});
+    botao.focus({ preventScroll: true });
+  }
+
+  function fechar() {
+    const a = atual;
+    if (!a || a.estado === 'fechando') return;
+    a.estado = 'fechando';
+    const agora = getComputedStyle(a.clone).transform;   // de onde ela está agora (vale também se fechar no meio da abertura)
+    a.anim.cancel();
+    a.clone.style.transform = agora;
+    // volta ao lugar onde a polaroid está hoje (a janela pode ter mudado de tamanho) e à inclinação de repouso
+    const [cx, cy] = centro(a.origem);
+    const rot = parseFloat(getComputedStyle(a.origem).getPropertyValue('--rot')) || 0;
+    const volta = `translate(${cx - (a.left + a.w0 / 2)}px, ${cy - (a.top + a.h0 / 2)}px) rotate(${rot}deg) scale(1)`;
+    const dur = reduzido() ? 0 : 440;
+    const anim = a.clone.animate([{ transform: agora }, { transform: volta }],
+      { duration: dur, easing: 'cubic-bezier(0.4, 0, 0.2, 1)', fill: 'forwards' });
+    a.overlay.animate([{ backgroundColor: 'rgba(8, 6, 5, 0.95)' }, { backgroundColor: 'rgba(8, 6, 5, 0)' }], { duration: dur, fill: 'forwards' });
+    a.botao.animate([{ opacity: 1 }, { opacity: 0 }], { duration: Math.min(dur, 200), fill: 'forwards' });
+    anim.finished.then(() => {
+      a.overlay.remove();
+      a.origem.classList.remove('origem-ampliada');
+      document.querySelectorAll(SECOES).forEach(el => { el.inert = false; });
+      a.origem.focus({ preventScroll: true });
+      atual = null;
+    }, () => {});
+  }
+
+  // clique (ou Enter / Espaço) numa polaroid com foto
+  const polaroidDe = e => e.target.closest && e.target.closest('.polaroid[data-ampliavel]');
+  tl.addEventListener('click', e => { const p = polaroidDe(e); if (p) abrir(p); });
+  tl.addEventListener('keydown', e => {
+    const p = polaroidDe(e);
+    if (!p || e.target !== p) return;
+    if (e.key === 'Enter') { e.preventDefault(); abrir(p); }
+    else if (e.key === ' ') e.preventDefault();               // Espaço abre ao soltar a tecla, como um botão
+  });
+  tl.addEventListener('keyup', e => { const p = polaroidDe(e); if (p && e.target === p && e.key === ' ') abrir(p); });
+
+  document.addEventListener('keydown', e => {
+    if (!atual) return;
+    if (e.key === 'Escape') fechar();
+    else if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End'].includes(e.key)) e.preventDefault();
+  });
+  window.addEventListener('resize', () => {
+    if (atual && atual.estado === 'aberta') atual.clone.style.transform = transformAberto(atual);
+  });
+  return { abrir, fechar };
+})();
 
 /* começa no topo: ao carregar e também quando o navegador devolve a página do cache (voltar/avançar) */
 const irParaOTopo = () => window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
