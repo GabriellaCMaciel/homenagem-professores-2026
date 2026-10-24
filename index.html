@@ -476,8 +476,7 @@ const HISTORIA = [
     ],
     ps: "[Rabisco à mão, ex.: \u201Cesse dia ele explicou fetch 4 vezes até a gente entender\u201D]",
     foto: "img/turma-com-professor-janio.jpg",
-    fotoTam: [1600, 900],
-    caption: "19/08/2026"
+    fotoTam: [1600, 900]
   },
   {
     tipo: "professor",
@@ -505,8 +504,7 @@ const HISTORIA = [
     ],
     ps: "[Rabisco à mão]",
     foto: "img/turma-com-professora-marcia.jpg",
-    fotoTam: [1600, 1200],
-    caption: "05/05/2026"
+    fotoTam: [1600, 1200]
   },
   {
     tipo: "professor",
@@ -534,8 +532,7 @@ const HISTORIA = [
     ],
     ps: "[Rabisco à mão]",
     foto: "img/turma-com-professora-natany.jpg",
-    fotoTam: [1600, 1200],
-    caption: "09/05/2026"
+    fotoTam: [1600, 1200]
   },
   {
     tipo: "professor",
@@ -563,8 +560,7 @@ const HISTORIA = [
     ],
     ps: "[Rabisco à mão]",
     foto: "img/turma-com-professor-israel.jpg",
-    fotoTam: [1280, 960],
-    caption: "29/05/2026"
+    fotoTam: [1280, 960]
   },
   {
     tipo: "professor",
@@ -592,8 +588,7 @@ const HISTORIA = [
     ],
     ps: "[Rabisco à mão]",
     foto: "img/turma-com-professor-pedro.jpg",
-    fotoTam: [1325, 957],
-    caption: "23/10/2026"
+    fotoTam: [1325, 957]
   },
   {
     tipo: "professor",
@@ -628,8 +623,7 @@ const HISTORIA = [
     ],
     ps: "[Rabisco à mão]",
     foto: "img/turma-com-professor-rodrigo.jpg",
-    fotoTam: [1600, 900],
-    caption: "15/10/2026"
+    fotoTam: [1600, 900]
   },
   {
     tipo: "fim",
@@ -650,24 +644,27 @@ HISTORIA.forEach((item, i) => {
   const entry = document.createElement('div');
   entry.className = `entry ${side}`;
 
+  // legenda da polaroid: só aparece se o item tiver uma (as fotos dos professores ficam sem texto embaixo)
+  const legendaHtml = (it) => it.caption ? `<div class="caption">${it.caption}</div>` : '';
+
   let photoHtml = '';
   if (item.tipo === 'inicio') {
     photoHtml = `<div class="polaroid special"><div class="photo">
       <div class="dots">${'<span></span>'.repeat(29)}</div>
       <div class="special-note">29 pessoas.<br>0 amizades.<br>(ainda)</div>
-    </div><div class="caption">${item.caption}</div></div>`;
+    </div>${legendaHtml(item)}</div>`;
   } else if (item.tipo === 'fim') {
     photoHtml = `<div class="polaroid empty"><div class="photo">
       <div class="empty-inner">foto da formatura<br>fica aqui <span class="emoji">\u{1F4F7}</span></div>
-    </div><div class="caption">${item.caption}</div></div>`;
+    </div>${legendaHtml(item)}</div>`;
   } else if (!item.foto) {
     photoHtml = `<div class="polaroid empty"><div class="photo">
       <div class="empty-inner">foto com ${item.titulo}<br>fica aqui <span class="emoji">\u{1F4F7}</span></div>
-    </div><div class="caption">${item.caption}</div></div>`;
+    </div>${legendaHtml(item)}</div>`;
   } else {
     // largura/altura reais da foto: o navegador já reserva o espaço certo antes de ela carregar
     const tam = item.fotoTam ? ` width="${item.fotoTam[0]}" height="${item.fotoTam[1]}"` : '';
-    photoHtml = `<div class="polaroid"><div class="photo"><img src="${item.foto}"${tam} alt="${item.titulo} com a turma" loading="lazy"></div><div class="caption">${item.caption}</div></div>`;
+    photoHtml = `<div class="polaroid"><div class="photo"><img src="${item.foto}"${tam} alt="${item.titulo} com a turma" loading="lazy"></div>${legendaHtml(item)}</div>`;
   }
 
   const cursosHtml = item.componentes
