@@ -352,6 +352,7 @@ body {
   margin: 3.2rem auto 0;
 }
 .final .names {
+  --m: clamp(0.8rem, 1.2vw, 1.6rem); /* metade do vão entre dois nomes */
   max-width: min(100%, 1360px);
   margin: 3rem auto 0;
   font-size: 0.9rem;
@@ -360,9 +361,10 @@ body {
   text-wrap: balance;
 }
 .final .names span {
+  position: relative;
   display: inline-block;
   white-space: nowrap;
-  margin: 0 clamp(0.8rem, 1.2vw, 1.6rem);
+  margin: 0 var(--m);
   font-family: 'Caveat', cursive;
   font-size: clamp(1.5rem, 0.9vw + 1.1rem, 2.1rem);
   font-weight: 500;
@@ -370,9 +372,50 @@ body {
   line-height: 1.9;
   color: var(--txt);
 }
+/* bolinha no meio do vão entre os nomes; o JS marca .fim-linha no último nome de cada linha para ela sumir */
+.final .names span::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: calc(100% + var(--m));
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.7;
+}
+.final .names span.fim-linha::after { display: none; }
 .final .names.honra { margin-top: 2.4rem; }
 .final .names.honra span { font-size: clamp(1.3rem, 0.7vw + 1rem, 1.7rem); color: var(--txt-dim); }
 .final .names strong { color: var(--accent-soft); display: block; margin-bottom: 0.8rem; letter-spacing: 0.3em; font-size: 0.75rem; text-transform: uppercase; }
+
+/* botão de voltar ao topo */
+.final .topo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 4.5rem;
+  padding: 0.9rem 1.8rem;
+  font: inherit;
+  font-size: clamp(0.95rem, 0.4vw + 0.8rem, 1.2rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-soft);
+  background: transparent;
+  border: 1.5px solid rgba(232, 165, 75, 0.55);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.25s, border-color 0.25s, transform 0.25s;
+}
+.final .topo span { font-size: 1.25em; line-height: 1; transition: transform 0.25s; }
+.final .topo:hover { background: rgba(232, 165, 75, 0.14); border-color: var(--accent); }
+.final .topo:hover span { transform: translateY(-3px); }
+.final .topo:focus-visible { outline: 2px solid var(--accent-soft); outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .final .topo, .final .topo span { transition: none; }
+}
 
 /* ============ DESKTOP / TELAS GRANDES ============ */
 @media (min-width: 1200px) {
@@ -387,7 +430,8 @@ body {
   .entry::before { left: 20px; top: 0; transform: translate(-50%, -50%); }
   .side { width: 100%; padding: 2.2rem 0 0 3rem; text-align: left !important; order: unset !important; }
   .polaroid { max-width: 100%; }
-  .final .names span { margin: 0 0.8rem; font-size: 1.5rem; }
+  .final .names { --m: 0.8rem; }
+  .final .names span { font-size: 1.5rem; }
   .final .names.honra span { font-size: 1.3rem; }
 }
 </style>
@@ -414,6 +458,7 @@ if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   <div class="feliz">FELIZ DIA DOS PROFESSORES!</div>
   <div class="names" id="names"><strong>Turma Web e Mobile II - 2026</strong></div>
   <div class="names honra" id="honra"><strong>Menção honrosa</strong></div>
+  <button type="button" class="topo" id="topo"><span aria-hidden="true">↑</span> Voltar ao topo</button>
 </section>
 
 <script>
@@ -709,10 +754,32 @@ HISTORIA.forEach((item, i) => {
 });
 
 /* nomes da turma no final */
+/* sem espaço entre os nomes (só <wbr>, onde a linha pode quebrar), para a bolinha ficar exatamente no meio do vão */
 document.getElementById('names').innerHTML +=
-  ALUNOS.map(n => `<span>${n}</span>`).join(' ');
+  ALUNOS.map(n => `<span>${n}</span>`).join('<wbr>');
 document.getElementById('honra').innerHTML +=
-  MENCAO_HONROSA.map(n => `<span>${n}</span>`).join(' ');
+  MENCAO_HONROSA.map(n => `<span>${n}</span>`).join('<wbr>');
+
+/* a bolinha de depois do nome some no último nome de cada linha */
+function marcarFimDeLinha() {
+  document.querySelectorAll('.final .names').forEach(caixa => {
+    const nomes = [...caixa.querySelectorAll('span')];
+    nomes.forEach((nome, i) => {
+      const prox = nomes[i + 1];
+      nome.classList.toggle('fim-linha', !prox || prox.offsetTop > nome.offsetTop + nome.offsetHeight / 2);
+    });
+  });
+}
+marcarFimDeLinha();
+if (document.fonts) document.fonts.ready.then(marcarFimDeLinha);
+window.addEventListener('load', marcarFimDeLinha);
+window.addEventListener('resize', marcarFimDeLinha);
+
+/* voltar ao topo */
+document.getElementById('topo').addEventListener('click', () => {
+  const reduzido = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.scrollTo({ top: 0, left: 0, behavior: reduzido ? 'instant' : 'smooth' });
+});
 
 /* animação de entrada no scroll */
 const observer = new IntersectionObserver((entries) => {
