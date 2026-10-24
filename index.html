@@ -675,6 +675,9 @@ HISTORIA.forEach((item, i) => {
     ? item.depoimentos.map(d => `<div class="quote">${d.texto}</div><div class="author">— ${d.autor}</div>`).join('')
     : `<div class="quote">${item.depoimento}</div><div class="author">— Turma Web e Mobile II - 2026</div>`;
 
+  // rabisco à mão: texto entre [colchetes] é só um lembrete e fica escondido até virar o texto de verdade
+  const psHtml = item.ps && !item.ps.startsWith('[') ? `<div class="ps">${item.ps}</div>` : '';
+
   entry.innerHTML = `
     <div class="side">${photoHtml}</div>
     <div class="side"><div class="card">
@@ -683,7 +686,7 @@ HISTORIA.forEach((item, i) => {
       ${item.periodo ? `<div class="period">${item.periodo}</div>` : ''}
       ${cursosHtml}
       ${depoimentosHtml}
-      <div class="ps">${item.ps}</div>
+      ${psHtml}
     </div></div>`;
   tl.appendChild(entry);
 });
