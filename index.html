@@ -18,6 +18,13 @@
   --bg2: #241d17;
   --paper: #fdf8ef;
   --ink: #2b241c;
+  /* Cores "opostas" (255 - cada canal) do papel, da tinta e da fita. O Chrome com modo escuro
+     automático escurece fundos claros e textos escuros, mas deixa em paz o que já é escuro/claro
+     demais; por isso a polaroid é pintada com a cor oposta e depois invertida com filter: invert(1),
+     o que devolve exatamente a cor original, em qualquer modo. */
+  --paper-inv: #020710;
+  --ink-inv: #d4dbe3;
+  --tape-inv: rgba(10, 38, 87, 0.75);
   --accent: #e8a54b;
   --accent-soft: #f5d9a8;
   --line: rgba(245, 217, 168, 0.25);
@@ -142,7 +149,7 @@ body {
 /* -------- Polaroid -------- */
 .polaroid {
   display: inline-block;
-  background: var(--paper);
+  isolation: isolate;
   padding: 14px 14px 52px;
   border-radius: 4px;
   box-shadow: 0 18px 45px rgba(0,0,0,0.5), 0 3px 10px rgba(0,0,0,0.4);
@@ -179,7 +186,18 @@ body {
   text-align: center;
   font-family: 'Caveat', cursive;
   font-size: 1.35rem;
-  color: var(--ink);
+  color: var(--ink-inv); /* invertida de volta pelo filter: resulta em var(--ink) */
+  filter: invert(1);
+}
+/* papel branco da polaroid (atrás de tudo) */
+.polaroid::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 4px;
+  background: var(--paper-inv);
+  filter: invert(1); /* resulta em var(--paper), mesmo com modo escuro forçado */
 }
 /* fita adesiva */
 .polaroid::before {
@@ -190,10 +208,10 @@ body {
   width: 90px;
   height: 26px;
   transform: translateX(-50%) rotate(-3deg);
-  background: rgba(245, 217, 168, 0.75);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.25);
-  border-left: 1px dashed rgba(0,0,0,0.08);
-  border-right: 1px dashed rgba(0,0,0,0.08);
+  background: var(--tape-inv); /* resulta em rgba(245, 217, 168, 0.75) */
+  filter: invert(1) drop-shadow(0 2px 2.5px rgba(0,0,0,0.25));
+  border-left: 1px dashed rgba(255,255,255,0.08);
+  border-right: 1px dashed rgba(255,255,255,0.08);
 }
 /* -------- polaroid especial (sem foto) -------- */
 .polaroid.special .photo {
@@ -228,20 +246,23 @@ body {
 /* -------- polaroid vazia (formatura) -------- */
 .polaroid.empty .photo {
   aspect-ratio: 4 / 3;
-  border: 2px dashed rgba(43, 36, 28, 0.3);
+  border: 2px dashed rgba(212, 219, 227, 0.3); /* invertido de volta: rgba(43, 36, 28, 0.3) */
   background: transparent;
+  filter: invert(1);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .empty-inner {
   text-align: center;
-  color: rgba(43,36,28,0.55);
+  color: rgba(212, 219, 227, 0.55); /* invertido de volta: rgba(43, 36, 28, 0.55) */
   font-family: 'Caveat', cursive;
   font-size: 1.3rem;
   padding: 1rem;
   line-height: 1.35;
 }
+/* o emoji já é colorido: desfaz a inversão do quadro para ele manter as cores originais */
+.empty-inner .emoji { display: inline-block; filter: invert(1); }
 /* -------- Card de texto -------- */
 .module-label {
   font-size: 0.75rem;
@@ -589,11 +610,11 @@ HISTORIA.forEach((item, i) => {
     </div><div class="caption">${item.caption}</div></div>`;
   } else if (item.tipo === 'fim') {
     photoHtml = `<div class="polaroid empty"><div class="photo">
-      <div class="empty-inner">foto da formatura<br>fica aqui \u{1F4F7}</div>
+      <div class="empty-inner">foto da formatura<br>fica aqui <span class="emoji">\u{1F4F7}</span></div>
     </div><div class="caption">${item.caption}</div></div>`;
   } else if (!item.foto) {
     photoHtml = `<div class="polaroid empty"><div class="photo">
-      <div class="empty-inner">foto com ${item.titulo}<br>fica aqui \u{1F4F7}</div>
+      <div class="empty-inner">foto com ${item.titulo}<br>fica aqui <span class="emoji">\u{1F4F7}</span></div>
     </div><div class="caption">${item.caption}</div></div>`;
   } else {
     // largura/altura reais da foto: o navegador já reserva o espaço certo antes de ela carregar
