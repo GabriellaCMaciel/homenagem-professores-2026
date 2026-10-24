@@ -391,6 +391,10 @@ body {
   .final .names.honra span { font-size: 1.3rem; }
 }
 </style>
+<script>
+/* ao recarregar (F5) ou voltar pelo histórico, a página começa sempre no topo */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+</script>
 </head>
 <body>
 
@@ -715,6 +719,11 @@ const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.25 });
 document.querySelectorAll('.entry').forEach(el => observer.observe(el));
+
+/* começa no topo: ao carregar e também quando o navegador devolve a página do cache (voltar/avançar) */
+const irParaOTopo = () => window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+irParaOTopo();
+window.addEventListener('pageshow', e => { if (e.persisted) irParaOTopo(); });
 </script>
 </body>
 </html>
